@@ -106,12 +106,9 @@ class Blade
     }
 
 
-    /**
-     * @deprecated Use aliasComponent()
-     */
-    public function component(string $path, string $alias=null): BladeInterface
+    public function component(string $class, string $alias = null, string $prefix = ""): BladeInterface
     {
-        return static::getInstance()->component($path, $alias);
+        return static::getInstance()->component($class, $alias, $prefix);
     }
 
 
