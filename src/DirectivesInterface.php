@@ -1,6 +1,6 @@
 <?php
 
-namespace duncan3dc\Laravel;
+namespace ank\blade;
 
 use Illuminate\View\Compilers\BladeCompiler;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace duncan3dc\Laravel;
+namespace ank\blade;
 
 use Illuminate\Contracts\View\View as ViewInterface;
 use function is_dir;
@@ -15,7 +15,7 @@ class Blade
     /**
      * @var BladeInstance|null $instance The internal cache of the BladeInstance to only instantiate it once
      */
-    private static $instance;
+    protected static $instance;
 
 
     /**

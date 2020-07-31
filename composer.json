@@ -29,7 +29,7 @@
         "phpunit/phpunit": "^8.3"
     },
     "autoload": {
-        "psr-4": {"duncan3dc\\Laravel\\": "src/"}
+        "psr-4": {"ank\\blade\\": "src/"}
     },
     "autoload-dev": {
         "psr-4": {"duncan3dc\\LaravelTests\\": "tests/"}

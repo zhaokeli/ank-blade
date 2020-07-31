@@ -1,6 +1,6 @@
 <?php
 
-namespace duncan3dc\Laravel;
+namespace ank\blade;
 
 use Illuminate\View\Compilers\BladeCompiler;
 
@@ -16,22 +16,22 @@ class Directives implements DirectivesInterface
     /**
      * @var bool $namespace Whether to apply the namespace directive or not.
      */
-    private $namespace = true;
+    protected $namespace = true;
 
     /**
      * @var bool $use Whether to apply the use directive or not.
      */
-    private $use = true;
+    protected $use = true;
 
     /**
      * @var string|null $css The path to use for the css directive, or null to not apply the directive.
      */
-    private $css = "css";
+    protected $css = "css";
 
     /**
      * @var string|null $js The path to use for the javascript directive, or null to not apply the directive.
      */
-    private $js = "js";
+    protected $js = "js";
 
 
     /**
@@ -42,7 +42,7 @@ class Directives implements DirectivesInterface
      *
      * @return self The new modified instance
      */
-    private function clone(string $parameter, $value): self
+    protected function clone(string $parameter, $value): self
     {
         $directives = clone $this;
         $directives->$parameter = $value;
@@ -190,7 +190,7 @@ class Directives implements DirectivesInterface
      *
      * @return string The full path to the asset
      */
-    private function assetify(string $file, string $type, string $path): string
+    protected function assetify(string $file, string $type, string $path): string
     {
         if (in_array(substr($file, 0, 1), ["'", '"'], true)) {
             $file = trim($file, "'\"");

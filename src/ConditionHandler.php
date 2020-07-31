@@ -1,6 +1,6 @@
 <?php
 
-namespace duncan3dc\Laravel;
+namespace ank\blade;
 
 use function array_key_exists;
 
@@ -9,7 +9,7 @@ class ConditionHandler
     /**
      * @var array $conditions The conditions registered.
      */
-    private $conditions = [];
+    protected $conditions = [];
 
 
     /**

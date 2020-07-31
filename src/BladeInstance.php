@@ -1,6 +1,6 @@
 <?php
 
-namespace duncan3dc\Laravel;
+namespace ank\blade;
 
 use Illuminate\Contracts\View\View as ViewInterface;
 use Illuminate\Events\Dispatcher;
@@ -25,37 +25,37 @@ class BladeInstance implements BladeInterface
     /**
      * @var string $path The default path for views.
      */
-    private $path;
+    protected $path;
 
     /**
      * @var string $cache The default path for cached php.
      */
-    private $cache;
+    protected $cache;
 
     /**
      * @var DirectivesInterface $directives The custom directives to apply to this instance.
      */
-    private $directives;
+    protected $directives;
 
     /**
      * @var Factory|null $factory The internal cache of the Factory to only instantiate it once.
      */
-    private $factory;
+    protected $factory;
 
     /**
      * @var FileViewFinder|null $finder The internal cache of the FileViewFinder to only instantiate it once.
      */
-    private $finder;
+    protected $finder;
 
     /**
      * @var BladeCompiler|null The internal cache of the BladeCompiler to only instantiate it once.
      */
-    private $compiler;
+    protected $compiler;
 
     /**
      * @var ConditionHandler|null $conditionHandler The custom conditionals that have been registered.
      */
-    private $conditionHandler;
+    protected $conditionHandler;
 
 
     /**
@@ -80,7 +80,7 @@ class BladeInstance implements BladeInterface
     /**
      * @return EngineResolver
      */
-    private function getResolver(): EngineResolver
+    protected function getResolver(): EngineResolver
     {
         $resolver = new EngineResolver();
 
@@ -106,7 +106,7 @@ class BladeInstance implements BladeInterface
      *
      * @return FileViewFinder
      */
-    private function getViewFinder(): FileViewFinder
+    protected function getViewFinder(): FileViewFinder
     {
         if (!$this->finder) {
             $this->finder = new FileViewFinder(new Filesystem(), [$this->path]);
@@ -121,7 +121,7 @@ class BladeInstance implements BladeInterface
      *
      * @return Factory
      */
-    private function getViewFactory(): Factory
+    protected function getViewFactory(): Factory
     {
         if ($this->factory) {
             return $this->factory;
@@ -138,7 +138,7 @@ class BladeInstance implements BladeInterface
      *
      * @return BladeCompiler
      */
-    private function getCompiler(): BladeCompiler
+    protected function getCompiler(): BladeCompiler
     {
         if ($this->compiler) {
             return $this->compiler;

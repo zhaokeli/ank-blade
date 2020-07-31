@@ -1,6 +1,6 @@
 <?php
 
-namespace duncan3dc\Laravel;
+namespace ank\blade;
 
 use Illuminate\Contracts\View\Factory as FactoryInterface;
 use Illuminate\Contracts\View\View as ViewInterface;
