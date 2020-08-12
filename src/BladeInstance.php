@@ -22,6 +22,7 @@ use function mkdir;
  */
 class BladeInstance implements BladeInterface
 {
+    protected $isDebug = false;
     /**
      * @var string $path The default path for views.
      */
@@ -60,14 +61,13 @@ class BladeInstance implements BladeInterface
 
     /**
      * Create a new instance of the blade view factory.
-     *
-     * @param string $path The default path for views
-     * @param string $cache The default path for cached php
+     * @param string              $path  The default path for views
+     * @param string              $cache The default path for cached php
      * @param DirectivesInterface $directives
      */
     public function __construct(string $path, string $cache, DirectivesInterface $directives = null)
     {
-        $this->path = $path;
+        $this->path  = $path;
         $this->cache = $cache;
 
         if ($directives === null) {
@@ -103,7 +103,6 @@ class BladeInstance implements BladeInterface
 
     /**
      * Get the laravel view finder.
-     *
      * @return FileViewFinder
      */
     protected function getViewFinder(): FileViewFinder
@@ -118,7 +117,6 @@ class BladeInstance implements BladeInterface
 
     /**
      * Get the laravel view factory.
-     *
      * @return Factory
      */
     protected function getViewFactory(): Factory
@@ -135,7 +133,6 @@ class BladeInstance implements BladeInterface
 
     /**
      * Get the internal compiler in use.
-     *
      * @return BladeCompiler
      */
     protected function getCompiler(): BladeCompiler
@@ -148,8 +145,9 @@ class BladeInstance implements BladeInterface
             mkdir($this->cache, 0777, true);
         }
 
-        $blade = new BladeCompiler(new Filesystem(), $this->cache);
-
+        //$blade = new BladeCompiler(new Filesystem(), $this->cache);
+        $blade = new Compiler(new Filesystem(), $this->cache);
+        $blade->debug($this->isDebug);
         $this->directives->register($blade);
 
         $this->compiler = $blade;
@@ -173,9 +171,7 @@ class BladeInstance implements BladeInterface
 
     /**
      * Register a custom Blade compiler.
-     *
      * @param callable $compiler
-     *
      * @return $this
      */
     public function extend(callable $compiler): BladeInterface
@@ -190,10 +186,8 @@ class BladeInstance implements BladeInterface
 
     /**
      * Register a handler for custom directives.
-     *
-     * @param string $name
+     * @param string   $name
      * @param callable $handler
-     *
      * @return $this
      */
     public function directive(string $name, callable $handler): BladeInterface
@@ -212,7 +206,8 @@ class BladeInstance implements BladeInterface
         $compiler = $this->getCompiler();
         if (method_exists($compiler, "aliasComponent")) {
             $compiler->aliasComponent($path, $alias);
-        } else {
+        }
+        else {
             $compiler->component($path, $alias);
         }
 
@@ -228,7 +223,8 @@ class BladeInstance implements BladeInterface
         $compiler = $this->getCompiler();
         if (method_exists($compiler, "aliasComponent")) {
             $compiler->aliasComponent($path, $alias);
-        } else {
+        }
+        else {
             $compiler->component($path, $alias);
         }
 
@@ -238,10 +234,8 @@ class BladeInstance implements BladeInterface
 
     /**
      * Register an custom conditional directive.
-     *
-     * @param string $name
+     * @param string   $name
      * @param callable $handler
-     *
      * @return $this
      */
     public function if(string $name, callable $handler): BladeInterface
@@ -270,9 +264,7 @@ class BladeInstance implements BladeInterface
 
     /**
      * Add a path to look for views in.
-     *
      * @param string $path The path to look in
-     *
      * @return $this
      */
     public function addPath(string $path): BladeInterface
@@ -285,9 +277,7 @@ class BladeInstance implements BladeInterface
 
     /**
      * Check if a view exists.
-     *
      * @param string $view The name of the view to check
-     *
      * @return bool
      */
     public function exists($view): bool
@@ -298,10 +288,8 @@ class BladeInstance implements BladeInterface
 
     /**
      * Share data across all views.
-     *
-     * @param string $key The name of the variable to share
-     * @param mixed $value The value to assign to the variable
-     *
+     * @param string $key   The name of the variable to share
+     * @param mixed  $value The value to assign to the variable
      * @return $this
      */
     public function share($key, $value = null): BladeInterface
@@ -314,10 +302,8 @@ class BladeInstance implements BladeInterface
 
     /**
      * Register a composer.
-     *
-     * @param string $key The name of the composer to register
-     * @param mixed $value The closure or class to use
-     *
+     * @param string $key   The name of the composer to register
+     * @param mixed  $value The closure or class to use
      * @return array
      */
     public function composer($key, $value): array
@@ -328,10 +314,8 @@ class BladeInstance implements BladeInterface
 
     /**
      * Register a creator.
-     *
-     * @param string $key The name of the creator to register
-     * @param mixed $value The closure or class to use
-     *
+     * @param string $key   The name of the creator to register
+     * @param mixed  $value The closure or class to use
      * @return array
      */
     public function creator($key, $value): array
@@ -340,13 +324,10 @@ class BladeInstance implements BladeInterface
     }
 
 
-
     /**
      * Add a new namespace to the loader.
-     *
-     * @param string $namespace The namespace to use
-     * @param array|string $hints The hints to apply
-     *
+     * @param string       $namespace The namespace to use
+     * @param array|string $hints     The hints to apply
      * @return $this
      */
     public function addNamespace($namespace, $hints): BladeInterface
@@ -359,10 +340,8 @@ class BladeInstance implements BladeInterface
 
     /**
      * Replace the namespace hints for the given namespace.
-     *
-     * @param string $namespace The namespace to replace
-     * @param array|string $hints The hints to use
-     *
+     * @param string       $namespace The namespace to replace
+     * @param array|string $hints     The hints to use
      * @return $this
      */
     public function replaceNamespace($namespace, $hints): BladeInterface
@@ -375,11 +354,9 @@ class BladeInstance implements BladeInterface
 
     /**
      * Get the evaluated view contents for the given path.
-     *
-     * @param string $path The path of the file to use
-     * @param array $data The parameters to pass to the view
-     * @param array $mergeData The extra data to merge
-     *
+     * @param string $path      The path of the file to use
+     * @param array  $data      The parameters to pass to the view
+     * @param array  $mergeData The extra data to merge
      * @return ViewInterface The generated view
      */
     public function file($path, $data = [], $mergeData = []): ViewInterface
@@ -390,11 +367,9 @@ class BladeInstance implements BladeInterface
 
     /**
      * Generate a view.
-     *
-     * @param string $view The name of the view to make
-     * @param array $params The parameters to pass to the view
-     * @param array $mergeData The extra data to merge
-     *
+     * @param string $view      The name of the view to make
+     * @param array  $params    The parameters to pass to the view
+     * @param array  $mergeData The extra data to merge
      * @return ViewInterface The generated view
      */
     public function make($view, $params = [], $mergeData = []): ViewInterface
@@ -405,14 +380,17 @@ class BladeInstance implements BladeInterface
 
     /**
      * Get the content by generating a view.
-     *
-     * @param string $view The name of the view to make
-     * @param array $params The parameters to pass to the view
-     *
+     * @param string $view   The name of the view to make
+     * @param array  $params The parameters to pass to the view
      * @return string The generated content
      */
     public function render(string $view, array $params = []): string
     {
         return $this->make($view, $params)->render();
+    }
+
+    public function debug(bool $isDebug)
+    {
+        $this->isDebug = $isDebug;
     }
 }
